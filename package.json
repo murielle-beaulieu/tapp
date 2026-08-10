@@ -1,0 +1,29 @@
+{
+  "name": "tapp",
+  "version": "1.0.0",
+  "description": "A simple to-do list app built with Express JS and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murielle-beaulieu/tapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/murielle-beaulieu/tapp/issues"
+  },
+  "homepage": "https://github.com/murielle-beaulieu/tapp#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.9.1",
+    "nodemon": "3.1.14"
+  }
+}
