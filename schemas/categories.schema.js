@@ -7,7 +7,7 @@ const CategorySchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    deleted: {
+    isDeleted: {
       // soft delete
       type: Boolean,
       default: false,

@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const UserSchema = mongoose.Schema(
   {
-    user_email: {
+    userEmail: {
       type: String,
       required: true,
     },
-    user_password: {
+    userPassword: {
       type: String,
       required: true,
     },
@@ -14,10 +14,10 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    deleted: {
+    isDeleted: {
       // soft delete
       type: Boolean,
-      required: true,
+      default: false
     },
   },
   {

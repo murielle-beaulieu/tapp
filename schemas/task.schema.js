@@ -2,29 +2,33 @@ import mongoose from "mongoose";
 
 const TaskSchema = mongoose.Schema(
   {
-    user_id: {
-      // this will be in relation to a different schema - user who post the task
-      type: Number,
+    taskUser: {
+      type: mongoose.Types.ObjectId, 
+      ref: "TaskUser",
       required: true,
     },
-    task_name: {
+    taskName: {
       type: String,
       required: true,
     },
-    task_note: {
+    taskNote: {
       type: String,
       required: false,
     },
-    category: {
-      // this will be in relation to a different schema - the category assigned
-      type: String,
+    taskCategory: {
+      type: mongoose.Types.ObjectId,
+      ref: "TaskCategory",
       required: false,
     },
-    due_date: {
+    dueDate: {
       type: Date,
       required: false,
     },
-    deleted: {
+    isDone: {
+      type: Boolean,
+      default: false,
+    },
+    isDeleted: {
       // soft delete
       type: Boolean,
       default: false,
