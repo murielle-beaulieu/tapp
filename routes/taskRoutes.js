@@ -16,7 +16,7 @@ router.route("/completed")
 
 router.route("/:id")
 .get(getTaskByID)
-.post(updateTask);
+.put(updateTask);
 
 router.route("/delete/:id")
 .put(deleteTask);

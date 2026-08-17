@@ -11,7 +11,8 @@ A simple to-do list app built with Express JS and MongoDB
 # Tech Stack
 - Node.js — JavaScript
 - Express — web framework
-- MongoDB - document database
+- MongoDB - document database (used alongside Mongoose and Nodemon)
+- JWT and bcrypt - user authentication and password encryption
 
 # Installation
 - git clone git@github.com:murielle-beaulieu/tapp.git

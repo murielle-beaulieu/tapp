@@ -14,6 +14,11 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      required: true,
+      default: "general" // general or admin
+    },
     isDeleted: {
       // soft delete
       type: Boolean,
