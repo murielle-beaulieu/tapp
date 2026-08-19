@@ -7,6 +7,11 @@ const CategorySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    categoryUser: {
+      type: mongoose.Types.ObjectId,
+      ref: "CategoryUser",
+      required: true,
+    },
     isDeleted: {
       // soft delete
       type: Boolean,
