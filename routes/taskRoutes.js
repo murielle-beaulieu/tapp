@@ -1,6 +1,3 @@
-import express from 'express';
-import mongoose from "mongoose";
-import { Task } from "../models/Task.js";
 import { Router } from 'express';
 
 import {getActiveTasks, getCompletedTasks, getDeletedTasks, getTaskByID, createTask, updateTask, deleteTask} from "../controllers/taskController.js";
@@ -14,17 +11,12 @@ router.route("/")
 router.route("/completed")
 .get(getCompletedTasks);
 
-router.route("/:id")
-.get(getTaskByID)
-.put(updateTask);
-
-router.route("/delete/:id")
-.put(deleteTask);
-
-router.route("/completed")
-.get(getCompletedTasks);
-
 router.route("/deleted")
 .get(getDeletedTasks);
+
+router.route("/:id")
+.get(getTaskByID)
+.put(updateTask)
+.delete(deleteTask);
 
 export default router;

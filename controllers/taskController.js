@@ -1,4 +1,5 @@
 import { Task } from "../models/Task.js";
+import { User } from "../models/User.js";
 
 // get all active tasks -> not currently specifying the user
 export const getActiveTasks = async (req, res) => {
@@ -6,7 +7,7 @@ export const getActiveTasks = async (req, res) => {
     const activeTasks = await Task.find({
       isDeleted: false,
       isCompleted: false,
-    }).sort({ createdAt: -1 });
+    }).populate('TaskUser').sort({ createdAt: -1 });
     res.status(200).json(activeTasks);
   } catch (error) {
     res.status(500).json({ message: err.message });

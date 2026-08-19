@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
+import uniqueValidator from 'mongoose-unique-validator'
 
 const UserSchema = mongoose.Schema(
   {
     userEmail: {
       type: String,
       required: true,
+      unique: true
     },
     userPassword: {
       type: String,
@@ -17,17 +19,19 @@ const UserSchema = mongoose.Schema(
     role: {
       type: String,
       required: true,
-      default: "general" // general or admin
+      default: "general", // general or admin
     },
     isDeleted: {
       // soft delete
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   {
     timestamp: true,
   },
 );
+
+UserSchema.plugin(uniqueValidator)
 
 export const User = mongoose.model("User", UserSchema);

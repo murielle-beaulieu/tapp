@@ -1,6 +1,3 @@
-import express from 'express';
-import mongoose from "mongoose";
-import { Category } from "../models/Category.js";
 import { Router } from 'express';
 
 import {getActiveCategories, getDeletedCategories, getCategoryByID, createCategory, updateCategory, deleteCategory} from "../controllers/categoryController.js";
@@ -11,14 +8,12 @@ router.route("/")
 .get(getActiveCategories)
 .post(createCategory);
 
+router.route("/deleted")
+.get(getDeletedCategories);
+
 router.route("/:id")
 .get(getCategoryByID)
 .put(updateCategory)
-
-router.route("delete/:id")
-.put(deleteCategory);
-
-router.route("/deleted")
-.get(getDeletedCategories);
+.delete(deleteCategory)
 
 export default router;
