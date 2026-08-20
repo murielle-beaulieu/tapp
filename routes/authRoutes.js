@@ -3,7 +3,7 @@ import { userSignIn, userSignUp } from "../controllers/authController.js";
 
 const router = Router();
 
-router.route("/login")
+router.route("/signin")
 .get(userSignIn)
 
 router.route("/signup")
