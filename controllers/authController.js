@@ -1,12 +1,18 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
-import { createUser } from "./userController.js";
+import bcrypt from "bcryptjs";
 
 // user sign up
 
 export const userSignUp = async (req, res) => {
-  const { userEmail, userPassword, username } = req.body;
+  let { userEmail, userPassword, username } = req.body;
+  try {
+    userPassword = await bcrypt.hash(userPassword, 10);
+  } catch {
+    console.log(err);
+  }
   const newUser = User({ userEmail, userPassword, username });
+  
   try {
     await newUser.save();
   } catch (error) {
@@ -19,7 +25,7 @@ export const userSignUp = async (req, res) => {
         userID: newUser._id,
       },
       `${process.env.JWT_SECRETKEY}`,
-      { expiresIn: "1h" },
+      { expiresIn: "30m" },
     );
   } catch (error) {
     console.log(error);
@@ -55,7 +61,7 @@ export const userSignIn = async (req, res) => {
         userID: existingUser._id,
       },
       `${process.env.JWT_SECRETKEY}`,
-      { expiresIn: "1h" },
+      { expiresIn: "30m" },
     );
   } catch (err) {
     console.log(err);
@@ -69,5 +75,3 @@ export const userSignIn = async (req, res) => {
     },
   });
 };
-
-// user sign out

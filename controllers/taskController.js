@@ -1,5 +1,4 @@
 import { Task } from "../models/Task.js";
-import { User } from "../models/User.js";
 
 // get all active tasks -> not currently specifying the user
 export const getActiveTasks = async (req, res) => {
