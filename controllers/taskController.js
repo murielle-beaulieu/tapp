@@ -16,6 +16,23 @@ export const getActiveTasks = async (req, res) => {
   }
 };
 
+// in app, the user clicks on a category (that belongs to them) from the list
+// then the category ID adds to the path and we request it as such
+
+export const getActiveTasksByCategory = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    const tasksByCategory = await Task.find({
+      isDeleted: false,
+      isCompleted: false,
+      taskCategory: id,
+    }).sort({ createdAt: -1 });
+    res.status(200).json(tasksByCategory);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export const getCompletedTasks = async (req, res) => {
   const { currentUser } = await req.body;
   try {
