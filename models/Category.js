@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const CategorySchema = mongoose.Schema(
   {
-    category_name: {
+    categoryName: {
       type: String,
       required: true,
     },

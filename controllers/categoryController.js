@@ -1,10 +1,13 @@
 import { Category } from "../models/Category.js";
 
-// get all active categories -> not currently specifying the user
+// all methods below are returning categories for the specified user
+
 export const getActiveCategories = async (req, res) => {
+  const { currentUser } = await req.body;
   try {
     const activeCategories = await Category.find({
       isDeleted: false,
+      categoryUser: currentUser,
     }).sort({ createdAt: -1 });
     res.status(200).json(activeCategories);
   } catch (error) {
@@ -12,11 +15,12 @@ export const getActiveCategories = async (req, res) => {
   }
 };
 
-// get all deleted categories
 export const getDeletedCategories = async (req, res) => {
+  const { currentUser } = await req.body;
   try {
     const deletedCategories = await Category.find({
-      isDeleted: true
+      isDeleted: true,
+      categoryUser: currentUser,
     });
     res.status(200).json(deletedCategories);
   } catch (error) {
@@ -24,7 +28,6 @@ export const getDeletedCategories = async (req, res) => {
   }
 };
 
-// get category by id
 export const getCategoryByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -35,7 +38,6 @@ export const getCategoryByID = async (req, res) => {
   }
 };
 
-// create category
 export const createCategory = async (req, res) => {
   try {
     const newCategory = await Category.create(req.body);
@@ -45,7 +47,6 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// update category
 export const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -58,13 +59,12 @@ export const updateCategory = async (req, res) => {
 
     const updatedCategory = await Category.findById(id);
     res.status(200).json(updatedCategory);
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// delete category
+// soft delete
 export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
