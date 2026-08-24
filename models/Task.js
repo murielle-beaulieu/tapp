@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const TaskSchema = mongoose.Schema(
   {
-    taskUser: {
+    user: {
       type: mongoose.Types.ObjectId, 
-      ref: "TaskUser",
+      ref: "User",
       required: false, // while working out some things, usually should be true
     },
     taskName: {
@@ -15,9 +15,9 @@ const TaskSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    taskCategory: {
+    Category: {
       type: mongoose.Types.ObjectId,
-      ref: "TaskCategory",
+      ref: "Category",
       required: false,
     },
     dueDate: {

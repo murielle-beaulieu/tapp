@@ -4,13 +4,13 @@ import bcrypt from "bcryptjs";
 
 // user sign up
 export const userSignUp = async (req, res) => {
-  let { userEmail, userPassword, username } = req.body;
+  let { email, password, username } = req.body;
   try {
-    userPassword = await bcrypt.hash(userPassword, 10);
+    password = await bcrypt.hash(password, 10);
   } catch {
     console.log(err);
   }
-  const newUser = User({ userEmail, userPassword, username });
+  const newUser = User({ email, password, username });
 
   try {
     await newUser.save();
@@ -29,7 +29,7 @@ export const userSignUp = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  res.status(201).json({
+  return res.status(201).json({
     success: true,
     data: {
       token: token,
@@ -39,11 +39,11 @@ export const userSignUp = async (req, res) => {
 
 // user sign in
 export const userSignIn = async (req, res) => {
-  const { userEmail, userPassword } = req.body;
+  const { email, password } = req.body;
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ userEmail: userEmail });
+    existingUser = await User.findOne({ email: email });
 
     if (!existingUser) {
       return res.status(401).json({
@@ -60,12 +60,12 @@ export const userSignIn = async (req, res) => {
   let token;
 
   try {
-    const match = await bcrypt.compare(userPassword, existingUser.userPassword);
+    const match = await bcrypt.compare(password, existingUser.password);
 
     if (match) {
       token = jwt.sign(
         {
-          userID: existingUser._id,
+          id: existingUser._id,
         },
         `${process.env.JWT_SECRETKEY}`,
         { expiresIn: "30m" },

@@ -7,9 +7,9 @@ const CategorySchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    categoryUser: {
+    user: {
       type: mongoose.Types.ObjectId,
-      ref: "CategoryUser",
+      ref: "User",
       required: true,
     },
     isDeleted: {

@@ -3,12 +3,12 @@ import uniqueValidator from "mongoose-unique-validator";
 
 const UserSchema = mongoose.Schema(
   {
-    userEmail: {
+    email: {
       type: String,
       required: true,
       unique: true,
     },
-    userPassword: {
+    password: {
       type: String,
       required: true,
     },

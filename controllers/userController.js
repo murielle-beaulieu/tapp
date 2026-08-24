@@ -5,9 +5,9 @@ import bcrypt from "bcryptjs";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -15,9 +15,9 @@ export const getAllUsers = async (req, res) => {
 export const getAllActiveUsers = async (req, res) => {
   try {
     const users = await User.find({ isDeleted: false }).sort({ createdAt: -1 });
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -25,9 +25,9 @@ export const getAllActiveUsers = async (req, res) => {
 export const getAllDeletedUsers = async (req, res) => {
   try {
     const users = await User.find({ isDeleted: true }).sort({ createdAt: -1 });
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -38,18 +38,9 @@ export const getUserByID = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-export const createUser = async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -59,18 +50,18 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
     const user = await User.findByIdAndUpdate(id, req.body);
     if (!user) {
-      res.status(404).json({ message: "No match found" });
+      return res.status(404).json({ message: "No match found" });
     }
     const updatedUser = await User.findById(id);
-    res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 };
 
 // update user password - rehash pw
 export const updatePassword = async (req, res) => {
-  const { userID, newPassword } = req.body;
+  const { id, newPassword } = req.body;
   let updatedPassword;
   try {
     updatedPassword = await bcrypt.hash(newPassword, 10);
@@ -79,17 +70,17 @@ export const updatePassword = async (req, res) => {
   }
   console.log(updatePassword);
   try {
-    const user = await User.findByIdAndUpdate(userID, {
-      userPassword: updatedPassword,
+    const user = await User.findByIdAndUpdate(id, {
+      password: updatedPassword,
     });
 
     if (!user) {
-      res.status(404).json({ message: "No match found" });
+    return res.status(404).json({ message: "No match found" });
     }
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
     console.log(err);
-    res.status(500).json("Something went wrong");
+    return res.status(500).json("Something went wrong");
   }
 };
 
@@ -99,10 +90,10 @@ export const deleteUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(id, { isDeleted: true });
 
     if (!user) {
-      res.status(404).json({ message: "No match found" });
+      return res.status(404).json({ message: "No match found" });
     }
-    res.status(200).json(deletedUser);
+    return res.status(200).json(deletedUser);
   } catch (error) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
