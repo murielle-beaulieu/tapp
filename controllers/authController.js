@@ -3,7 +3,6 @@ import { User } from "../models/User.js";
 import bcrypt from "bcryptjs";
 
 // user sign up
-
 export const userSignUp = async (req, res) => {
   let { userEmail, userPassword, username } = req.body;
   try {
@@ -12,7 +11,7 @@ export const userSignUp = async (req, res) => {
     console.log(err);
   }
   const newUser = User({ userEmail, userPassword, username });
-  
+
   try {
     await newUser.save();
   } catch (error) {
@@ -27,8 +26,8 @@ export const userSignUp = async (req, res) => {
       `${process.env.JWT_SECRETKEY}`,
       { expiresIn: "30m" },
     );
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
   res.status(201).json({
     success: true,
@@ -40,37 +39,54 @@ export const userSignUp = async (req, res) => {
 
 // user sign in
 export const userSignIn = async (req, res) => {
-  const { userEmail, userPassword } = await req.body;
+  const { userEmail, userPassword } = req.body;
   let existingUser;
 
   try {
     existingUser = await User.findOne({ userEmail: userEmail });
-  } catch {
-    const error = new Error("Error! Something went wrong.");
-    return next(error);
-  }
 
-  if (!existingUser || existingUser.userPassword != userPassword) {
-    const error = new Error("Email or Password is wrong");
-  }
-  let token;
-  try {
-    token = jwt.sign(
-      {
-        userID: existingUser._id,
-      },
-      `${process.env.JWT_SECRETKEY}`,
-      { expiresIn: "30m" },
-    );
+    if (!existingUser) {
+      return res.status(401).json({
+        message: "Invalid credentials",
+      });
+    }
   } catch (err) {
     console.log(err);
-    const error = new Error("Error! Something went wrong.");
+    return res.status(500).json({
+      message: "Something went wrong",
+    });
   }
 
-  res.status(200).json({
-    success: true,
-    data: {
-      token: token,
-    },
-  });
+  let token;
+
+  try {
+    const match = await bcrypt.compare(userPassword, existingUser.userPassword);
+
+    if (match) {
+      token = jwt.sign(
+        {
+          userID: existingUser._id,
+        },
+        `${process.env.JWT_SECRETKEY}`,
+        { expiresIn: "30m" },
+      );
+
+      return res.status(200).json({
+        success: true,
+        data: {
+          token: token,
+        },
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: "wrong credentials",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
 };
