@@ -39,7 +39,6 @@ export const userSignUp = async (req, res) => {
 };
 
 // user sign in
-
 export const userSignIn = async (req, res) => {
   const { userEmail, userPassword } = await req.body;
   let existingUser;

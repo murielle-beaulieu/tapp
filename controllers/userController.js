@@ -30,7 +30,6 @@ export const getAllDeletedUsers = async (req, res) => {
   }
 }
 
-// get user by id
 export const getUserByID = async (req, res) => {
     try{
         const { id } = req.params;
@@ -44,7 +43,6 @@ export const getUserByID = async (req, res) => {
     }
 }
 
-// create user
 export const createUser = async (req, res) => {
     try {
         const newUser = await User.create(req.body);
@@ -54,7 +52,6 @@ export const createUser = async (req, res) => {
     }
 }
 
-// update user
 export const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -70,7 +67,6 @@ export const updateUser = async (req, res) => {
     }
 }
 
-// delete user
 export const deleteUser = async (req, res) => {
     try {
         const {id } = req.params;

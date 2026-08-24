@@ -1,23 +1,27 @@
 import { Task } from "../models/Task.js";
 
-// get all active tasks -> not currently specifying the user
+// all methods below are returning tasks for the specified user
+
 export const getActiveTasks = async (req, res) => {
+  const { currentUser } = await req.body;
   try {
     const activeTasks = await Task.find({
       isDeleted: false,
       isCompleted: false,
-    }).populate('TaskUser').sort({ createdAt: -1 });
+      taskUser: currentUser,
+    }).sort({ createdAt: -1 });
     res.status(200).json(activeTasks);
   } catch (error) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// get all completed task
 export const getCompletedTasks = async (req, res) => {
+  const { currentUser } = await req.body;
   try {
     const completedTasks = await Task.find({
       isCompleted: true,
+      taskUser: currentUser,
     }).sort({ createdAt: -1 });
     res.status(200).json(completedTasks);
   } catch (error) {
@@ -25,11 +29,12 @@ export const getCompletedTasks = async (req, res) => {
   }
 };
 
-// get all deleted tasks
 export const getDeletedTasks = async (req, res) => {
+  const { currentUser } = await req.body;
   try {
     const deletedTask = await Task.find({
       isDeleted: true,
+      taskUser: currentUser,
     }).sort({ createdAt: -1 });
     res.status(200).json(deletedTask);
   } catch (error) {
@@ -37,7 +42,6 @@ export const getDeletedTasks = async (req, res) => {
   }
 };
 
-// get task by id
 export const getTaskByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -48,7 +52,6 @@ export const getTaskByID = async (req, res) => {
   }
 };
 
-// create task
 export const createTask = async (req, res) => {
   try {
     const newTask = await Task.create(req.body);
@@ -58,7 +61,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-// update task
 export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,7 +77,7 @@ export const updateTask = async (req, res) => {
   }
 };
 
-// delete task - soft delete
+// soft delete
 export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
