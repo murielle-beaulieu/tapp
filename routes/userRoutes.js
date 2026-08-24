@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { getAllUsers,getAllActiveUsers, getAllDeletedUsers, getUserByID, createUser, updateUser, deleteUser } from '../controllers/userController.js';
+import { getAllUsers,getAllActiveUsers, getAllDeletedUsers, getUserByID, createUser, updateUser, deleteUser, updatePassword } from '../controllers/userController.js';
 
 const router = Router();
 
@@ -13,6 +13,9 @@ router.route("/deleted")
 
 router.route("/active")
 .get(getAllActiveUsers)
+
+router.route("/password")
+.put(updatePassword)
 
 router.route("/:id")
 .get(getUserByID)

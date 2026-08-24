@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 
 const CategorySchema = mongoose.Schema(
   {
-    category_name: {
+    categoryName: {
       type: String,
       required: true,
     },
-    categoryUser: {
+    user: {
       type: mongoose.Types.ObjectId,
-      ref: "CategoryUser",
+      ref: "User",
       required: true,
     },
     isDeleted: {
