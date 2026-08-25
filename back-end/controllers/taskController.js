@@ -1,0 +1,106 @@
+import { Task } from "../models/Task.js";
+
+// all methods below are returning tasks for the specified user
+
+export const getActiveTasks = async (req, res) => {
+  const { currentUser } = await req.body;
+  try {
+    const activeTasks = await Task.find({
+      isDeleted: false,
+      isCompleted: false,
+      user: currentUser,
+    }).sort({ createdAt: -1 });
+    return res.status(200).json(activeTasks);
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// in app, the user clicks on a category (that belongs to them) from the list
+// then the category ID adds to the path and we request it as such
+
+export const getActiveTasksByCategory = async (req, res) => {
+  try {
+    const { id } = await req.params;
+    const tasksByCategory = await Task.find({
+      isDeleted: false,
+      isCompleted: false,
+      category: id,
+    }).sort({ createdAt: -1 });
+    return res.status(200).json(tasksByCategory);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+export const getCompletedTasks = async (req, res) => {
+  const { currentUser } = await req.body;
+  try {
+    const completedTasks = await Task.find({
+      isCompleted: true,
+      user: currentUser,
+    }).sort({ createdAt: -1 });
+    return res.status(200).json(completedTasks);
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const getDeletedTasks = async (req, res) => {
+  const { currentUser } = await req.body;
+  try {
+    const deletedTask = await Task.find({
+      isDeleted: true,
+      user: currentUser,
+    }).sort({ createdAt: -1 });
+    return res.status(200).json(deletedTask);
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const getTaskByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.findById(id);
+    return res.status(200).json(task);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const createTask = async (req, res) => {
+  try {
+    const newTask = await Task.create(req.body);
+    return res.status(200).json(newTask);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+export const updateTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.findByIdAndUpdate(id, req.body);
+
+    if (!task) {
+      return res.status(404).json({ message: "No match found" });
+    }
+
+    const updatedTask = await Task.findById(id);
+    return res.status(200).json(updatedTask);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// soft delete
+export const deleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const taskDeleted = await Task.findByIdAndUpdate(id, { isDeleted: true });
+    return res.status(200).json(taskDeleted);
+  } catch (error) {
+    return res.status(500).json({ message: err.message });
+  }
+};
